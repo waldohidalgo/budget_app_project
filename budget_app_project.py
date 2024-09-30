@@ -41,6 +41,9 @@ class Category:
         output = title + "\n" + items + "Total: " + f'{total:.2f}'
         return output
 
+    def __repr__(self):
+        return self.name
+
 def create_spend_chart(categories):
     # categories is a list of objects from class Category
     title='Percentage spent by category\n'
@@ -62,6 +65,7 @@ def create_spend_chart(categories):
         dict_percentages_categories.append({'percent':current_percent-current_percent % 10, 'category': categories[i]})
     graph=''
     dict_percentages_categories.sort(key=lambda x: (x['percent']!=0, -x['percent']))
+    
     for i in range(100, -10, -10):
         graph += f"{i:>3}|"
         for percentage in (dict['percent'] for dict in dict_percentages_categories):
@@ -73,7 +77,7 @@ def create_spend_chart(categories):
     graph += ' '*4 + ('-' * (len(categories) * 3 + 1)) + '\n'
     for i in range(max_length_titles_categories):
         graph += ' '*4
-        for category in categories:
+        for category in (dict['category'] for dict in dict_percentages_categories):
             if i < len(category.name):
                 graph += f' {category.name[i]} '
             else:
@@ -95,4 +99,7 @@ if __name__ == "__main__":
     food.withdraw(105.55)
     entertainment.withdraw(33.40)
     business.withdraw(10.99)
+    print(food)
+    print(entertainment)
+    print(business)
     print(create_spend_chart([food, entertainment, business]))
